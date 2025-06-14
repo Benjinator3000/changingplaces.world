@@ -735,3 +735,7 @@ body.dark-mode .lang-menu div:hover {
 .remove-photo-btn {
   transition: background-color 0.3s ease;
 }
+
+html {
+  scroll-behavior: smooth;
+}
