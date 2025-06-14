@@ -5,6 +5,8 @@ function getCurrentLang() {
   return window.currentLang || 'en';
 }
 
+const BASE_URL = 'https://changingplaces-backend.onrender.com';
+
 console.log("map.js geladen");
 console.log("Checking against knownLocations:", knownLocations);
 console.log("✅ knownLocations beschikbaar voor confirmatie:", knownLocations);
