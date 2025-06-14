@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Changing Places Worldwide</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/flag-icon-css/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.2/luxon.min.js"></script>
+    
+
+  </head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container d-flex align-items-center justify-content-between">
+      <!-- Left: Logo and title -->
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <span id="svg-logo" class="me-2"></span>
+        Changing Places Worldwide
+      </a>
+  
+      <!-- Right: Filters and Buttons in two rows -->
+      <div class="d-flex flex-column ms-auto gap-2 w-100">
+        <!-- First row -->
+        <div class="d-flex flex-wrap justify-content-end align-items-center gap-2">
+          <select class="selectpicker" id="countryFilter" data-live-search="true" data-width="fit" data-style="btn-light">
+            <option data-content='🌍 All countries' value="">All countries</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/au.svg" style="width: 20px; margin-right: 6px;"> Australia' value="Australia">Australia</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/us.svg" style="width: 20px; margin-right: 6px;"> United States' value="United States">United States</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/be.svg" style="width: 20px; margin-right: 6px;"> Belgium' value="Belgium">Belgium</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/nl.svg" style="width: 20px; margin-right: 6px;"> Netherlands' value="Netherlands">Netherlands</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/hu.svg" style="width: 20px; margin-right: 6px;"> Hungary' value="Hungary">Hungary</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/me.svg" style="width: 20px; margin-right: 6px;"> Montenegro' value="Montenegro">Montenegro</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/ad.svg" style="width: 20px; margin-right: 6px;"> Andorra' value="Andorra">Andorra</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/es.svg" style="width: 20px; margin-right: 6px;"> Spain' value="Spain">Spain</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/no.svg" style="width: 20px; margin-right: 6px;"> Norway' value="Norway">Norway</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/de.svg" style="width: 20px; margin-right: 6px;"> Germany' value="Germany">Germany</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/ie.svg" style="width: 20px; margin-right: 6px;"> Ireland' value="Ireland">Ireland</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/fr.svg" style="width: 20px; margin-right: 6px;"> France' value="France">France</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/lu.svg" style="width: 20px; margin-right: 6px;"> Luxembourg' value="Luxembourg">Luxembourg</option>
+            <option data-content='<img src="/static/flag-icon-css/flags/4x3/gb.svg" style="width: 20px; margin-right: 6px;"> United Kingdom' value="United Kingdom">United Kingdom</option>
+          </select>
+  
+          <select class="selectpicker" id="cityFilter" data-live-search="true" data-width="fit" data-style="btn-light">
+            <option data-content='🏙️ All cities' value="">All cities</option>
+            <option data-content='Washington' value="Washington">Washington</option>
+            <option data-content='San Francisco' value="San Francisco">San Francisco</option>
+            <option data-content='Ghent' value="Ghent">Ghent</option>
+            <option data-content='Budapest' value="Budapest">Budapest</option>
+            <option data-content='Berlin' value="Berlin">Berlin</option>
+            <option data-content='Perth' value="Perth">Perth</option>
+            <option data-content='Hobart' value="Hobart">Hobart</option>
+            <option data-content='Barcelona' value="Barcelona">Barcelona</option>
+            <option data-content='Sydney' value="Sydney">Sydney</option>
+            <option data-content='Dublin' value="Dublin">Dublin</option>
+            <option data-content='London' value="London">London</option>
+          </select>
+  
+          <select class="selectpicker" id="equipmentFilter" data-live-search="true" data-width="185px" data-style="btn-light" multiple title="🛠️ All equipment">
+            <option data-content='🛠️ All equipment' value="">All equipment</option>
+            <option data-content='Changing table' value="Changing table">Changing table</option>
+            <option data-content='Height-adjustable changing table' value="Height-adjustable changing table">Height-adjustable changing table</option>
+            <option data-content='Height-adjustable washbasin' value="Height-adjustable washbasin">Height-adjustable washbasin</option>
+            <option data-content='Height-adjustable washbasin and toilet' value="Height-adjustable washbasin and toilet">Height-adjustable washbasin and toilet</option>
+            <option data-content='Hoist' value="Hoist">Hoist</option>
+            <option data-content='Ostomy toilet' value="Ostomy toilet">Ostomy toilet</option>
+            <option data-content='Shower' value="Shower">Shower</option>
+          </select>
+  
+          <button class="dark-mode-toggle position-relative z-3" type="button" onclick="toggleDarkMode()">🌙</button>
+  
+          <div class="dropdown">
+            <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Menu</button>
+            <ul class="dropdown-menu dropdown-menu-end main-nav-menu">
+              <li><a class="dropdown-item" href="mission.html">Mission</a></li>
+              <li><a class="dropdown-item" href="who-we-are.html">Who we are</a></li>
+              <li><a class="dropdown-item" href="reva.html">Reva fair</a></li>
+              <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+  
+        <!-- Second row -->
+        <div class="d-flex justify-content-end align-items-center gap-2">
+          <button id="openNowToggle" type="button" onclick="toggleOpenNow()">🟢 Open now</button>
+
+          <div class="lang-switcher position-relative">
+            <button class="btn btn-light lang-btn" onclick="toggleLangMenu(event)">
+              <img id="currentLangFlag" src="/static/flag-icon-css/flags/4x3/gb.svg" alt="EN">
+            </button>
+            <div class="lang-menu d-none">
+              <div onclick="setLanguage('en')">
+                <img src="/static/flag-icon-css/flags/4x3/gb.svg" alt="EN"> English
+              </div>
+              <div onclick="setLanguage('nl')">
+                <img src="/static/flag-icon-css/flags/4x3/nl.svg" alt="NL"> Nederlands
+              </div>
+            </div>
+          </div>
+        
+          <div id="fullscreen-btn" onclick="toggleFullscreen()" style="cursor: pointer;">🔍 Fullscreen Map</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <h3 class="mt-4 text-center">📍 Known Changing Places</h3>
+    <div id="mapid"></div>
+
+    
+
+    <form id="locationForm" class="p-4 mb-5" onreset="resetFormExtras()">
+      <h4>Add New Location</h4>
+      <div class="row g-2">
+        <div class="col-md-4">
+          <input class="form-control" id="locName" placeholder="Name" required />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" id="locCity" placeholder="City" required />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" id="locAddress" placeholder="Address" required />
+        </div>
+      </div>
+      <div class="row g-2 mt-2">
+        <div class="col-md-4">
+          <input class="form-control" id="locAccess" placeholder="Accessibility (separate with commas)" />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" id="locEquip" placeholder="Equipment (separate with commas)" />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" id="locPhoto" placeholder="Photo URLs (separate with commas)" />
+          <div class="mt-2">
+            <label class="btn btn-success position-relative">
+              <span id="fileLabelText">📁 Choose Files</span>
+              <input type="file" id="photoFiles" multiple accept="image/*"
+                     onchange="updateFileLabel();"
+                     style="opacity: 0; position: absolute; left: 0; top: 0; height: 100%; width: 100%; cursor: pointer;" />
+            </label>
+            <span id="fileCountLabel" class="ms-2 text-white">No files chosen</span>
+          </div>
+          <div id="photoPreview" class="mt-2 d-flex flex-wrap gap-2"></div>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <label><input type="checkbox" id="24_7" onchange="toggleOpeningInputs(this)"> Open 24/7</label>
+        <button class="btn btn-confirm-location ms-2" type="button" onclick="completeAddress()">Complete Address</button>
+        <button class="btn btn-confirm-location ms-2" type="button" onclick="fetchOpeningHours()">Use Google Opening Hours</button>
+        <button class="btn btn-confirm-location ms-2" type="button" onclick="fetchGooglePhoto()">Add Google Photo URL</button>
+        <button class="btn btn-confirm-location ms-2" type="button" onclick="uploadPhotos()">Upload Photos</button>
+        <div class="row row-cols-2 row-cols-md-4 g-2 mt-1">
+          <div class="col">Mon: <input id="mon_open" type="time"> - <input id="mon_close" type="time"> <label><input type="checkbox" id="mon_closed"> Closed</label></div>
+          <div class="col">Tue: <input id="tue_open" type="time"> - <input id="tue_close" type="time"> <label><input type="checkbox" id="tue_closed"> Closed</label></div>
+          <div class="col">Wed: <input id="wed_open" type="time"> - <input id="wed_close" type="time"> <label><input type="checkbox" id="wed_closed"> Closed</label></div>
+          <div class="col">Thu: <input id="thu_open" type="time"> - <input id="thu_close" type="time"> <label><input type="checkbox" id="thu_closed"> Closed</label></div>
+          <div class="col">Fri: <input id="fri_open" type="time"> - <input id="fri_close" type="time"> <label><input type="checkbox" id="fri_closed"> Closed</label></div>
+          <div class="col">Sat: <input id="sat_open" type="time"> - <input id="sat_close" type="time"> <label><input type="checkbox" id="sat_closed"> Closed</label></div>
+          <div class="col">Sun: <input id="sun_open" type="time"> - <input id="sun_close" type="time"> <label><input type="checkbox" id="sun_closed"> Closed</label></div>
+        </div>
+      </div>
+      <div class="mt-4 d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-2">
+          <button class="btn btn-success" type="button" onclick="handleAddLocation()">Add Location</button>
+          <button class="btn btn-confirm-location" type="button" onclick="handleConfirmLocation()">Confirm Location</button>
+        </div>
+        <button class="btn btn-success" type="reset">🔁 Reset</button>
+      </div>
+    </form>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+
+  <script>
+    const translations = {
+  en: {
+    navTitle: "Changing Places Worldwide",
+    allCountries: "All countries",
+    allCities: "All cities",
+    allEquipment: "All equipment",
+    openNow: "🟢 Open now",
+    fullscreen: "🔍 Fullscreen Map",
+    title: "📍 Known Changing Places",
+    addTitle: "Add New Location",
+    name: "Name",
+    city: "City",
+    address: "Address",
+    access: "Accessibility (separate with commas)",
+    equip: "Equipment (separate with commas)",
+    photo: "Photo URLs (separate with commas)",
+    chooseFiles: "📁 Choose Files",
+    noFiles: "No files chosen",
+    openAlways: "Open 24/7",
+    completeAddr: "Complete Address",
+    fetchHours: "Use Google Opening Hours",
+    fetchPhoto: "Add Google Photo URL",
+    upload: "Upload Photos",
+    addBtn: "Add Location",
+    confirmBtn: "Confirm Location",
+    reset: "🔁 Reset",
+    footerMenu: "MENU",
+    footerContact: "CONTACT",
+    footerMap: "The Map",
+    mission: "Mission",
+    whatWeDo: "Who we are",
+    reva: "Reva fair",
+    contact: "Contact",
+    closed: "Closed",
+    hours: "Opening hours",
+    noHours: "No opening hours",
+    accessibility: "Accessibility",
+    equipmentLabel: "Equipment",
+    directions: "Directions",
+    countries: {
+      Australia: "Australia",
+      "United States": "United States",
+      Belgium: "Belgium",
+      Netherlands: "Netherlands",
+      Hungary: "Hungary",
+      Montenegro: "Montenegro",
+      Andorra: "Andorra",
+      Spain: "Spain",
+      Norway: "Norway",
+      Germany: "Germany",
+      Ireland: "Ireland",
+      France: "France",
+      Luxembourg: "Luxembourg",
+      "United Kingdom": "United Kingdom"
+    },
+    cities: {
+      Washington: "Washington",
+      "San Francisco": "San Francisco",
+      Ghent: "Ghent",
+      Budapest: "Budapest",
+      Berlin: "Berlin",
+      Perth: "Perth",
+      Hobart: "Hobart",
+      Barcelona: "Barcelona",
+      Sydney: "Sydney",
+      Dublin: "Dublin",
+      London: "London"
+    },
+    equipment: {
+    "Height-adjustable changing table": "Height-adjustable changing table",
+    "Hoist": "Hoist",
+    "Shower": "Shower",
+    "Changing bench": "Changing bench",
+    "Privacy screen": "Privacy screen",
+    "Adult-sized changing table": "Adult-sized changing table",
+    "Changing table": "Changing table",
+    "Height-adjustable washbasin and toilet": "Height-adjustable washbasin and toilet",
+    "Height-adjustable washbasin": "Height-adjustable washbasin"
+    }
+  },
+
+  nl: {
+    navTitle: "Changing Places Wereldwijd",
+    allCountries: "Alle landen",
+    allCities: "Alle steden",
+    allEquipment: "Alle uitrusting",
+    openNow: "🟢 Nu open",
+    fullscreen: "🔍 Volledig scherm",
+    title: "📍 Gekende Changing Places",
+    addTitle: "Nieuwe locatie toevoegen",
+    name: "Naam",
+    city: "Stad",
+    address: "Adres",
+    access: "Toegankelijkheid (scheiden met komma's)",
+    equip: "Uitrusting (scheiden met komma's)",
+    photo: "Foto-URL's (scheiden met komma's)",
+    chooseFiles: "📁 Kies Bestanden",
+    noFiles: "Geen bestanden gekozen",
+    openAlways: "24/7 open",
+    completeAddr: "Adres aanvullen",
+    fetchHours: "Google openingsuren gebruiken",
+    fetchPhoto: "Google-foto toevoegen",
+    upload: "Foto’s uploaden",
+    addBtn: "Locatie toevoegen",
+    confirmBtn: "Locatie bevestigen",
+    reset: "🔁 Herstel",
+    footerMenu: "MENU",
+    footerContact: "CONTACT",
+    footerMap: "De Kaart",
+    mission: "Missie",
+    whatWeDo: "Wie we zijn",
+    reva: "Reva-beurs",
+    contact: "Contact",
+    closed: "Gesloten",
+    hours: "Openingsuren",
+    noHours: "Geen openingsuren",
+    accessibility: "Toegankelijkheid",
+    equipmentLabel: "Uitrusting",
+    directions: "Routebeschrijving",
+    countries: {
+      Australia: "Australië",
+      "United States": "Verenigde Staten",
+      Belgium: "België",
+      Netherlands: "Nederland",
+      Hungary: "Hongarije",
+      Montenegro: "Montenegro",
+      Andorra: "Andorra",
+      Spain: "Spanje",
+      Norway: "Noorwegen",
+      Germany: "Duitsland",
+      Ireland: "Ierland",
+      France: "Frankrijk",
+      Luxembourg: "Luxemburg",
+      "United Kingdom": "Verenigd Koninkrijk"
+    },
+    cities: {
+      Washington: "Washington",
+      "San Francisco": "San Francisco",
+      Ghent: "Gent",
+      Budapest: "Boedapest",
+      Berlin: "Berlijn",
+      Perth: "Perth",
+      Hobart: "Hobart",
+      Barcelona: "Barcelona",
+      Sydney: "Sydney",
+      Dublin: "Dublin",
+      London: "Londen"
+    },
+    equipment: {
+    "Height-adjustable changing table": "Verstelbare verzorgingstafel",
+    "Hoist": "Elektrische tillift",
+    "Shower": "Douche",
+    "Changing table": "Verzorgingstafel",
+    "Privacy screen": "Privacy-scherm",
+    "Adult-sized changing table": "Verzorgingstafel voor volwassenen",
+    "Height-adjustable washbasin and toilet": "Verstelbare wastafel en toilet",
+    "Height-adjustable washbasin": "Verstelbare wastafel"
+    }
+  }
+};
+
+
+  </script>
+  <script>
+    const savedLang = localStorage.getItem('preferredLang') || 'en';
+    window.currentLang = savedLang;
+  </script>
+  <script src="map.js"></script>
+
+
+  <script>
+    function toggleLangMenu(event) {
+    event.stopPropagation();
+    document.querySelector('.lang-menu').classList.toggle('d-none');
+  }
+
+  // default language
+  function setLanguage(lang) {
+  localStorage.setItem('preferredLang', lang);
+  console.log("setLanguage aangeroepen met:", lang);
+  console.log("Beschikbare translatie:", translations[lang]);
+  window.currentLang = lang;
+
+  const flagSrc = lang === 'nl'
+    ? '/static/flag-icon-css/flags/4x3/nl.svg'
+    : '/static/flag-icon-css/flags/4x3/gb.svg';
+  document.getElementById('currentLangFlag').src = flagSrc;
+
+  document.querySelector('.lang-menu').classList.add('d-none');
+
+  requestAnimationFrame(() => {
+    translatePopups();
+    translateStaticText(lang); // << Geef nu de juiste taal mee
+    console.log("Gebruik van translations:", translations);
+    console.log("Vertaling voor menu:", translations[lang]?.mission);
+    setTimeout(() => translatePopups(), 50); // lichte vertraging helpt soms bij map.js afhankelijkheden
+  });
+}
+
+
+  document.addEventListener('click', () => {
+    document.querySelector('.lang-menu').classList.add('d-none');
+  });
+  </script>
+<script>
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    $('.selectpicker').selectpicker();
+  });
+
+  function updateLanguageDisplay() {
+    const langSelect = $('#languageSelect');
+    const selected = langSelect.find('option:selected');
+const dataContent = selected.data('content');
+if (dataContent) {
+  const flagSrc = dataContent.match(/src="([^"]+)"/)[1];
+  langSelect.siblings('.btn-light').html(`<img src="${flagSrc}" style="width: 20px;">`);
+}}
+
+  document.addEventListener("DOMContentLoaded", function () {
+    $('.selectpicker').selectpicker();
+    updateLanguageDisplay();
+
+    $('#languageSelect').on('changed.bs.select', function () {
+      updateLanguageDisplay();
+      // Optional: update language preference here
+    });
+  });
+  
+  
+ 
+  function translateStaticText(lang = window.currentLang) {
+  const t = translations[lang] || translations.en;
+  const tCountries = t.countries || {};
+  const tCities = t.cities || {};
+  const tEquip = t.equipment || {};
+
+  // Navbar
+  const brand = document.querySelector('.navbar-brand');
+  if (brand) {
+    const svg = document.getElementById('svg-logo');
+    brand.innerHTML = `<span id="svg-logo" class="me-2">${svg?.innerHTML || ''}</span>${t.navTitle}`;
+  }
+
+  document.querySelector('#openNowToggle').innerText = t.openNow;
+  document.querySelector('#fullscreen-btn').innerText = t.fullscreen;
+  document.querySelector('h3').innerHTML = t.title;
+  document.querySelector('#locationForm h4').innerText = t.addTitle;
+
+  // Form placeholders
+  document.getElementById('locName').placeholder = t.name;
+  document.getElementById('locCity').placeholder = t.city;
+  document.getElementById('locAddress').placeholder = t.address;
+  document.getElementById('locAccess').placeholder = t.access;
+  document.getElementById('locEquip').placeholder = t.equip;
+  document.getElementById('locPhoto').placeholder = t.photo;
+
+  // File input + label
+  const fileText = document.getElementById('fileLabelText');
+if (fileText) fileText.textContent = t.chooseFiles;
+  document.getElementById('fileCountLabel').innerText = t.noFiles;
+
+  // 24/7 checkbox
+  const checkbox = document.getElementById('24_7');
+  if (checkbox) {
+    const wrapper = checkbox.closest('label');
+    if (wrapper) {
+      wrapper.innerHTML = `<input type="checkbox" id="24_7" onchange="toggleOpeningInputs(this)"> ${t.openAlways}`;
+    }
+  }
+
+  // Buttons
+  document.querySelector('[onclick="completeAddress()"]').innerText = t.completeAddr;
+  document.querySelector('[onclick="fetchOpeningHours()"]').innerText = t.fetchHours;
+  document.querySelector('[onclick="fetchGooglePhoto()"]').innerText = t.fetchPhoto;
+  document.querySelector('[onclick="uploadPhotos()"]').innerText = t.upload;
+  document.querySelector('[onclick="handleAddLocation()"]').innerText = t.addBtn;
+  document.querySelector('[onclick="handleConfirmLocation()"]').innerText = t.confirmBtn;
+  document.querySelector('button[type="reset"]').innerText = t.reset;
+
+  // Footer
+  const footerTitles = document.querySelectorAll('.footer-title');
+  if (footerTitles[0]) footerTitles[0].innerText = t.footerMenu;
+  if (footerTitles[1]) footerTitles[1].innerText = t.footerContact;
+
+  const footerLinks = document.querySelectorAll('.footer-link');
+  if (footerLinks.length >= 4) {
+    footerLinks[0].textContent = t.mission;
+    footerLinks[1].textContent = t.whatWeDo;
+    footerLinks[2].textContent = t.reva;
+    footerLinks[3].textContent = t.footerMap;
+  }
+
+// Optional: force re-apply Bootstrap behaviors
+const menuKeys = ['mission', 'whatWeDo', 'reva', 'contact'];
+const menuItems = document.querySelectorAll('.main-nav-menu .dropdown-item');
+
+menuItems.forEach((item, i) => {
+  const key = menuKeys[i];
+  const label = t[key];
+  item.textContent = label ?? `[${key}]`;
+});
+
+  // Country dropdown
+  document.querySelectorAll('#countryFilter option').forEach(option => {
+    const label = tCountries[option.value];
+    if (label) {
+      const oldHTML = option.getAttribute('data-content') || '';
+      if (!oldHTML.includes('>')) return;
+      const newHTML = oldHTML.replace(/>[^<]*$/, `> ${label}`);
+      option.setAttribute('data-content', newHTML);
+      option.textContent = label;
+    }
+  });
+
+  document.querySelectorAll('#cityFilter option').forEach(option => {
+  const value = option.value.toLowerCase();
+
+  // Zoek bijpassende key uit de vertalingen
+  const match = Object.entries(tCities).find(([key]) => key.toLowerCase() === value);
+
+  if (match) {
+    const label = match[1]; // vertaling
+    option.setAttribute('data-content', label);
+    option.textContent = label;
+  }
+});
+
+  // Equipment dropdown
+  document.querySelectorAll('#equipmentFilter option').forEach(option => {
+    const label = tEquip[option.value];
+    if (label) {
+      option.setAttribute('data-content', label);
+      option.textContent = label;
+    }
+  });
+
+  // Placeholder (eerste optie)
+  $('#countryFilter option[value=""]').attr('data-content', `🌍 ${t.allCountries}`).text(t.allCountries);
+  $('#cityFilter option[value=""]').attr('data-content', `🏙️ ${t.allCities}`).text(t.allCities);
+  $('#equipmentFilter option[value=""]').attr('data-content', `🛠️ ${t.allEquipment}`).text(t.allEquipment);
+
+  // Refresh
+  $('#countryFilter').selectpicker('refresh');
+  $('#cityFilter').selectpicker('refresh');
+  $('#equipmentFilter').selectpicker('refresh');
+  $('.dropdown-toggle').dropdown('update');
+}
+
+
+  function toggleFullscreen() {
+    const elem = document.getElementById("mapid");
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen().catch(err => showshowAlertPopupPopup(`Error trying to enable fullscreen mode: ${err.message}`));
+    } else {
+      document.exitFullscreen();
+    }
+  }
+  function toggleOpeningInputs(checkbox) {
+    const fields = document.querySelectorAll('[id$="_open"], [id$="_close"]');
+    fields.forEach(f => f.disabled = checkbox.checked);
+  }
+  function fetchOpeningHours() {
+    const name = document.getElementById('locName').value;
+    const address = document.getElementById('locAddress').value;
+    if (!name || !address) return showAlertPopup('Name and address are required to fetch opening hours.');
+    fetch(`/fetch_hours?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.hours) {
+          Object.keys(data.hours).forEach(day => {
+            const [open, close] = data.hours[day];
+            if (open === 'Closed') {
+              document.getElementById(`${day}_closed`).checked = true;
+              document.getElementById(`${day}_open`).value = '';
+              document.getElementById(`${day}_close`).value = '';
+            } else {
+              document.getElementById(`${day}_open`).value = open;
+              document.getElementById(`${day}_close`).value = close;
+              document.getElementById(`${day}_closed`).checked = false;
+            }
+          });
+        } else {
+          showAlertPopup('No hours found.');
+        }
+      })
+      .catch(() => showAlertPopup('Failed to fetch opening hours'));
+  }
+  function completeAddress() {
+    const name = document.getElementById('locName').value;
+    const address = document.getElementById('locAddress').value;
+    fetch(`/autocomplete_address?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.name) document.getElementById('locName').value = data.name;
+        if (data.address) document.getElementById('locAddress').value = data.address;
+        if (data.city) document.getElementById('locCity').value = data.city;
+      })
+      .catch(() => console.warn('Autocomplete complete failed'));
+  }
+  function fetchGooglePhoto() {
+  const name = document.getElementById('locName').value;
+  if (!name) {
+    showAlertPopup('Name is required to fetch a photo.');
+    return;
+  }
+
+  fetch(`/fetch_photo_url?name=${encodeURIComponent(name)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.photo_url) {
+        const input = document.getElementById('locPhoto');
+        input.value += (input.value ? '\n' : '') + data.photo_url;
+      } else {
+        showAlertPopup('No photo found.');
+      }
+    })
+    .catch(() => showAlertPopup('Failed to fetch photo URL'));
+  }
+
+  let uploadDisabled = false;
+
+  function uploadPhotos() {
+  if (uploadDisabled) return showAlertPopup('You have already uploaded photos for this location.');
+  if (selectedFiles.length === 0) return showAlertPopup('No files selected');
+  if (selectedFiles.length > 10) return showAlertPopup('Max 10 photos allowed');
+
+  const formData = new FormData();
+  selectedFiles.forEach(file => formData.append('photos', file));
+
+  fetch('/upload_photos', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.uploaded && Array.isArray(data.uploaded)) {
+      const urlField = document.getElementById('locPhoto');
+      const urlsToAdd = data.uploaded.join(',');
+      if (urlField.value.trim()) {
+        urlField.value += ',' + urlsToAdd;
+      } else {
+        urlField.value = urlsToAdd;
+      }
+      uploadDisabled = true;
+    }
+  })
+  .catch(() => showAlertPopup('Failed to upload photos'));
+}
+
+const currentSlideIndexes = {};
+function changeSlide(uid, direction) {
+  const slides = document.querySelectorAll(`.slide-${uid}`);
+  if (!slides.length) return;
+  currentSlideIndexes[uid] = (currentSlideIndexes[uid] ?? 0);
+  slides[currentSlideIndexes[uid]].style.display = 'none';
+  currentSlideIndexes[uid] = (currentSlideIndexes[uid] + direction + slides.length) % slides.length;
+  slides[currentSlideIndexes[uid]].style.display = 'block';
+}
+
+
+
+
+
+
+let selectedFiles = [];
+
+function updateFileLabel() {
+  const input = document.getElementById('photoFiles');
+  const newFiles = Array.from(input.files);
+
+  // Add new files if not already included (by name + size)
+  newFiles.forEach(file => {
+    if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+      selectedFiles.push(file);
+    }
+  });
+
+  // Rebuild FileList to assign back to input
+  const dt = new DataTransfer();
+  selectedFiles.forEach(file => dt.items.add(file));
+  input.files = dt.files;
+
+  // Re-render
+  previewPhotos();
+}
+
+function previewPhotos() {
+  const preview = document.getElementById('photoPreview');
+  preview.innerHTML = '';
+
+  selectedFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.style.maxWidth = '100px';
+      img.style.borderRadius = '0.5rem';
+      img.style.boxShadow = '0 0 4px rgba(0,0,0,0.2)';
+      img.style.marginRight = '8px';
+
+      const removeBtn = document.createElement('button');
+      removeBtn.innerText = '✖';
+      removeBtn.title = 'Remove';
+      removeBtn.className = 'remove-photo-btn';
+      removeBtn.onclick = () => {
+        selectedFiles.splice(index, 1);
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        document.getElementById('photoFiles').files = dt.files;
+        previewPhotos();
+      };
+
+      container.appendChild(img);
+      container.appendChild(removeBtn);
+      preview.appendChild(container);
+    };
+    reader.readAsDataURL(file);
+  });
+// ✅ Update counter label here
+  document.getElementById('fileCountLabel').textContent =
+    selectedFiles.length === 0 ? 'No files chosen' : `${selectedFiles.length} file(s) uploaded`;
+}
+
+
+
+
+
+
+
+function resetFormExtras() {
+  selectedFiles = []; // ← clears the memory log
+  document.getElementById('photoFiles').value = ''; // resets input visually
+  document.getElementById('fileCountLabel').textContent = 'No files chosen';
+  document.getElementById('photoPreview').innerHTML = '';
+}
+
+    function handleAddLocation() {
+  if (typeof window.addLocation === 'function') {
+    window.addLocation();
+  } else {
+    console.error("addLocation is not defined");
+  }
+}
+
+function handleConfirmLocation() {
+  if (typeof window.confirmLocation === 'function') {
+    window.confirmLocation();
+  } else {
+    console.error("confirmLocation is not defined");
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  fetch('adult changing table.svg')
+    .then(res => res.text())
+    .then(svg => {
+      document.getElementById('svg-logo').innerHTML = svg;
+    })
+    .finally(() => {
+      const savedLang = localStorage.getItem('preferredLang') || 'en';
+      setLanguage(savedLang); // altijd uitvoeren, ongeacht SVG
+    });
+});
+
+$(function () {
+$('.selectpicker').selectpicker();
+});
+</script>
+
+<script src="alerts.js"></script>
+
+<footer class="custom-footer">
+  <div class="footer-inner container py-4 d-flex flex-wrap text-white">
+    <div class="footer-left" style="margin-left: 75px;">
+      <img src="/static/ezgif.com-animated-gif-maker.gif" alt="Animated Earth" class="footer-gif">
+    </div>
+    <div class="footer-menu-contact">
+      <div class="footer-center">
+        <h5 class="footer-title" style="font-size: 1.5rem;">MENU</h5>
+        <ul class="list-unstyled mb-0" style="font-size: 1.15rem;">
+          <li><a href="mission.html" class="footer-link">Mission</a></li>
+          <li><a href="who-we-are.html" class="footer-link">Who we are</a></li>
+          <li><a href="reva.html" class="footer-link">Reva fair</a></li>
+          <li><a href="#fullscreen-btn" class="footer-link">The Map</a></li>
+        </ul>
+      </div>
+      <div class="footer-right">
+        <h5 class="footer-title" style="font-size: 1.5rem;">CONTACT</h5>
+        <a href="mailto:hello@changingplaces.world.com" class="footer-link" style="font-size: 1.15rem;">hello@changingplaces.world.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="text-center" style="margin-top: -180px;">
+    <img src="/static/ChatGPT Image 6 jun 2025, 15_45_41.png" alt="Team OnWheels" style="max-height: 180px; border-radius: 8px;">
+  </div>
+  <div class="footer-bottom text-center mt-3">
+    <div>©2025, SurveyWithMercy</div>
+    <div>in coorporation with <a href="https://www.onwheelsapp.com/nl/" class="footer-link" target="_blank">OnWheelsApp</a></div>
+  </div>
+</footer>
+</body>
+</html>

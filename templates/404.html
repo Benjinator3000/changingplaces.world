@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png?v=2">
+    <meta charset="UTF-8">
+    <title>404 – Changing Place Not Found</title>
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <style>
+        body {
+            background: #1a2e16; /* exact dark mode green */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Quicksand', 'Arial Rounded MT Bold', Arial, sans-serif;
+            color: #ffffff;
+        }
+        .container-404 {
+            background: rgba(25,46,22,0.93); /* dark green, semi-transparent */
+            border-radius: 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            padding: 28px 20px 36px 20px;
+            text-align: center;
+            max-width: 900px;
+            width: 96vw;
+        }
+        .img-404 {
+            width: 100%;
+            max-width: 850px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+            margin-bottom: 2em;
+        }
+        .msg {
+            color: #f2efea;
+            font-size: 1.4rem;
+            margin-bottom: 1.4em;
+        }
+        .home-btn {
+            background: #36a969;
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            font-size: 1.15rem;
+            font-family: inherit;
+            font-weight: 600;
+            padding: 13px 40px;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 12px rgba(54, 169, 105, 0.13);
+        }
+        .home-btn:hover, .home-btn:focus {
+            background: #259657;
+            box-shadow: 0 6px 18px rgba(54,169,105,0.18);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-404">
+        <img src="/static/A_hand-drawn_and_digitally_painted_illustration_in.png"
+             alt="Dramatic Ghibli-style 404 changing place"
+             class="img-404">
+             <div id="errorMsg" class="msg">
+                Oops! Looks like things got completely out of control.<br>
+                This changing place is really having a disaster!
+              </div>
+        <form action="/">
+            <button id="homeBtn" class="home-btn">Back to Home</button>
+        </form>
+    </div>
+<script>
+  const lang = new URLSearchParams(window.location.search).get('lang');
+  if (lang === 'nl') {
+    document.getElementById('errorMsg').innerHTML =
+      "Oeps! Het lijkt erop dat alles helemaal ontspoord is.<br>Deze toiletplek is echt een ramp!";
+    document.getElementById('homeBtn').textContent = "Terug naar Home";
+  }
+</script>
+</body>
+</html>
+
