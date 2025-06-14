@@ -4,14 +4,14 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Mission – Changing Places</title>
-        <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="64x64" href="/static/favicon-64x64.png">
-        <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon-192x192.png">
+        <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+        <link rel="icon" type="image/png" sizes="32x32" href="static/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="64x64" href="static/favicon-64x64.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="static/favicon-192x192.png">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-        <link rel="stylesheet" href="/static/flag-icon-css/css/flag-icon.min.css" />
-        <link rel="stylesheet" href="/static/style.css" />
+        <link rel="stylesheet" href="static/flag-icon-css/css/flag-icon.min.css" />
+        <link rel="stylesheet" href="static/style.css" />
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css" />
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -28,14 +28,14 @@
       <div class="d-flex align-items-center gap-2">
         <div class="lang-switcher position-relative">
             <button class="btn btn-light lang-btn" onclick="toggleLangMenu(event)">
-              <img id="currentLangFlag" src="/static/flag-icon-css/flags/4x3/gb.svg" alt="EN">
+              <img id="currentLangFlag" src="static/flag-icon-css/flags/4x3/gb.svg" alt="EN">
             </button>
             <div class="lang-menu d-none">
               <div onclick="setLanguage('en')">
-                <img src="/static/flag-icon-css/flags/4x3/gb.svg" alt="EN"> English
+                <img src="static/flag-icon-css/flags/4x3/gb.svg" alt="EN"> English
               </div>
               <div onclick="setLanguage('nl')">
-                <img src="/static/flag-icon-css/flags/4x3/nl.svg" alt="NL"> Nederlands
+                <img src="static/flag-icon-css/flags/4x3/nl.svg" alt="NL"> Nederlands
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
 
   <div class="container mt-4 mb-5" style="color: #009B7D;">
     <div style="text-align: center;">
-        <img src="/static/ChatGPT Image 5 jun 2025, 20_00_19.png"
+        <img src="static/ChatGPT Image 5 jun 2025, 20_00_19.png"
              alt="Benjamin Mercy hiking"
              style="width: 75%; max-width: 600px; border-radius: 10px; margin-bottom: 2rem;" />
       </div>
@@ -81,7 +81,7 @@
   <footer class="custom-footer">
     <div class="footer-inner container py-4 d-flex flex-wrap text-white">
       <div class="footer-left" style="margin-left: 75px;">
-        <img src="/static/ezgif.com-animated-gif-maker.gif" alt="Animated Earth" class="footer-gif">
+        <img src="static/ezgif.com-animated-gif-maker.gif" alt="Animated Earth" class="footer-gif">
       </div>
       <div class="footer-menu-contact">
         <div class="footer-center">
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div class="text-center" style="margin-top: -180px;">
-      <img src="/static/ChatGPT Image 6 jun 2025, 15_45_41.png" alt="Team OnWheels" style="max-height: 180px; border-radius: 8px;">
+      <img src="static/ChatGPT Image 6 jun 2025, 15_45_41.png" alt="Team OnWheels" style="max-height: 180px; border-radius: 8px;">
     </div>
     <div class="footer-bottom text-center mt-3">
       <div>©2025, SurveyWithMercy</div>
@@ -128,8 +128,8 @@
       localStorage.setItem("preferredLang", lang);
       window.currentLang = lang;
       const flagSrc = lang === "nl" 
-        ? "/static/flag-icon-css/flags/4x3/nl.svg"
-        : "/static/flag-icon-css/flags/4x3/gb.svg";
+        ? "static/flag-icon-css/flags/4x3/nl.svg"
+        : "static/flag-icon-css/flags/4x3/gb.svg";
       document.getElementById("currentLangFlag").src = flagSrc;
       document.querySelector(".lang-menu").classList.add("d-none");
       translateMissionText();
