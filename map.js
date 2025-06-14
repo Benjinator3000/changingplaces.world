@@ -331,7 +331,7 @@ function createPopup(location) {
   if (location.name === "HOGENT campus Mercator") {
     return `
       <div class="custom-popup advocado-style text-center">
-        <a href="/404" style="text-decoration: none; color: inherit;">
+        <a href="404" style="text-decoration: none; color: inherit;">
           <img src="static/photos/381f243b-3b1d-475c-ba12-4680f8ae18f4.png" alt="Oops" style="width: 100%; border-radius: 12px; margin-bottom: 0.5rem;" />
           <div style="font-size: 1.2rem; font-weight: bold;">🌀 Meega, nala kweesta! 🌀</div>
           <div style="font-size: 1rem;">Click to uncover the mystery</div>
