@@ -271,7 +271,7 @@ function fetchLocations() {
     params.append('equipment', selectedEquipments.join(','));
   }
 
-  fetch('/locations?' + params.toString())
+  fetch('https://changingplaces-backend.onrender.com/locations?' + params.toString())
     .then(response => response.json())
     .then(locations => {
       if (openNow) {
@@ -590,7 +590,7 @@ function confirmLocation() {
   };
 
   
-  fetch('/locations', {
+  fetch('https://changingplaces-backend.onrender.com/locations', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
