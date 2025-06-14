@@ -5,7 +5,9 @@ function getCurrentLang() {
   return window.currentLang || 'en';
 }
 
-const BASE_URL = 'https://changingplaces-backend.onrender.com';
+const BASE_URL = window.location.hostname.includes('github.io')
+  ? 'https://changingplaces-backend.onrender.com'
+  : 'http://localhost:5000';
 
 console.log("map.js geladen");
 console.log("Checking against knownLocations:", knownLocations);
