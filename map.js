@@ -235,7 +235,7 @@ document.addEventListener('input', function (e) {
 });
 
 const greenIcon = new L.Icon({
-  iconUrl: '/static/images/changing_place_pin.png',
+  iconUrl: 'static/images/changing_place_pin.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
   iconSize: [30, 50],
   iconAnchor: [15, 50],
@@ -244,7 +244,7 @@ const greenIcon = new L.Icon({
 });
 
 const avocadoIcon = new L.Icon({
-  iconUrl: '/static/images/changing_place_pin_V7.png',
+  iconUrl: 'static/images/changing_place_pin_V7.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
   iconSize: [30, 50],
   iconAnchor: [15, 50],
@@ -332,7 +332,7 @@ function createPopup(location) {
     return `
       <div class="custom-popup advocado-style text-center">
         <a href="/404" style="text-decoration: none; color: inherit;">
-          <img src="/static/photos/381f243b-3b1d-475c-ba12-4680f8ae18f4.png" alt="Oops" style="width: 100%; border-radius: 12px; margin-bottom: 0.5rem;" />
+          <img src="static/photos/381f243b-3b1d-475c-ba12-4680f8ae18f4.png" alt="Oops" style="width: 100%; border-radius: 12px; margin-bottom: 0.5rem;" />
           <div style="font-size: 1.2rem; font-weight: bold;">🌀 Meega, nala kweesta! 🌀</div>
           <div style="font-size: 1rem;">Click to uncover the mystery</div>
         </a>
@@ -348,7 +348,7 @@ function createPopup(location) {
     let imageBlock = '';
     if (lang === 'en') {
       imageBlock = `
-        <img src="/static/photos/ChatGPT_Image_6_jun_2025_15_45_46.png"
+        <img src="static/photos/ChatGPT_Image_6_jun_2025_15_45_46.png"
              alt="${title}"
              style="width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin: 0.5rem 0;" />
       `;
