@@ -554,7 +554,7 @@ menuItems.forEach((item, i) => {
     const name = document.getElementById('locName').value;
     const address = document.getElementById('locAddress').value;
     if (!name || !address) return showAlertPopup('Name and address are required to fetch opening hours.');
-    fetch(`/fetch_hours?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
+    fetch(`https://changingplaces-backend.onrender.com/fetch_hours?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
       .then(res => res.json())
       .then(data => {
         if (data && data.hours) {
@@ -579,7 +579,7 @@ menuItems.forEach((item, i) => {
   function completeAddress() {
     const name = document.getElementById('locName').value;
     const address = document.getElementById('locAddress').value;
-    fetch(`/autocomplete_address?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
+    fetch(`https://changingplaces-backend.onrender.com/autocomplete_address?name=${encodeURIComponent(name)}&address=${encodeURIComponent(address)}`)
       .then(res => res.json())
       .then(data => {
         if (data.name) document.getElementById('locName').value = data.name;
@@ -595,7 +595,7 @@ menuItems.forEach((item, i) => {
     return;
   }
 
-  fetch(`/fetch_photo_url?name=${encodeURIComponent(name)}`)
+  fetch(`https://changingplaces-backend.onrender.com/fetch_photo_url?name=${encodeURIComponent(name)}`)
     .then(res => res.json())
     .then(data => {
       if (data.photo_url) {
@@ -618,7 +618,7 @@ menuItems.forEach((item, i) => {
   const formData = new FormData();
   selectedFiles.forEach(file => formData.append('photos', file));
 
-  fetch('/upload_photos', {
+  fetch('https://changingplaces-backend.onrender.com/upload_photos', {
     method: 'POST',
     body: formData
   })
